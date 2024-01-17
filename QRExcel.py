@@ -4,17 +4,16 @@
 import ctypes
 from os.path import join, exists, dirname, abspath, isfile
 
-# If we have QR then we need QR Codes
+# If we have QR then we need QR Codes 
 if exists('QR'):
-    from requests import get
+    import qrcode
+    from PIL import Image
     try:
         for line in open('QR.txt', 'r'):
-            with open('QR\\' + line.strip() + '.png', 'wb') as f:
-                f.write(get('https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + line.strip()).content)
-
+            qrcode.make(line.strip(),border=1).save('QR\\' + line.strip() + '.png')
     # General error
     except Exception as e:
-        ctypes.windll.user32.MessageBoxW(None, str(e), 'Error', 0)
+        pass # ctypes.windll.user32.MessageBoxW(None, str(e), 'Error', 0)
 else:
     from datetime import datetime
     from openpyxl import load_workbook, Workbook
@@ -88,7 +87,7 @@ else:
 
         # General error in the loop
         except Exception as e:
-            ctypes.windll.user32.MessageBoxW(None, str(e), 'Error', 0)
+            pass # ctypes.windll.user32.MessageBoxW(None, str(e), 'Error', 0)
     
     # Exiting gracefully
     SoundEffect('End.wav', SND_LOOP)
